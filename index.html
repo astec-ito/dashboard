@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0233)file:///C:/Users/82448/Downloads/%E3%82%AB%E3%82%B8%E3%83%AF%E3%83%A9%E3%83%AA%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0%E6%A7%98_WEB%E6%A1%88%E4%BB%B6%E7%AE%A1%E7%90%86%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89_2.html -->
-<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>カジワラリフォーム様：WEB案件管理ダッシュボード</title>
 <style>
@@ -238,6 +238,42 @@
     min-height: 80px;
   }
   
+  .status-select {
+    padding: 6px 12px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 32px !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  
+  .status-select option {
+    padding: 8px;
+    font-weight: 400;
+  }
+  
+  .status-select option[value="アステック対応中"] {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .status-select option[value="シールズ様対応中"] {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  .status-select option[value="先方確認中"] {
+    background-color: #fff3e0;
+    color: #f57c00;
+  }
+  
   .modal-footer {
     display: flex;
     gap: 8px;
@@ -256,11 +292,11 @@
 <div class="container">
   <div class="header">
     <h1>カジワラリフォーム様：WEB案件管理ダッシュボード</h1>
-    <span class="role-badge internal" id="roleBadge">ロール: アステックペイント（全案件表示）</span>
+    <span class="role-badge" id="roleBadge">ロール判定中...</span>
   </div>
   
   <div class="controls">
-    <button class="btn primary" id="addBtn" onclick="openAddModal()" style="display: block;">+ 新規案件追加</button>
+    <button class="btn primary" id="addBtn" onclick="openAddModal()">+ 新規案件追加</button>
   </div>
   
   <div class="table-wrapper">
@@ -271,105 +307,13 @@
           <th>案件名</th>
           <th>ステータス</th>
           <th>コメント</th>
-          <th id="actionHeader" style="display: table-cell;">アクション</th>
+          <th>PDF</th>
+          <th id="actionHeader">アクション</th>
         </tr>
       </thead>
-      <tbody id="tableBody"><tr>
-        <td></td>
-        <td>明石エリアページの新規制作</td>
-        <td><span class="status-badge status-astec">アステック対応中</span></td>
-        <td class="comment-cell">
-          <div>伊藤：ページ確認中</div>
-          <button class="action-btn" onclick="openCommentModal(4)" style="margin-top: 6px;">コメント追加</button>
-          
-        </td>
-        <td>
-          <div class="action-cell">
-            <button class="action-btn" onclick="editProject(4)">編集</button>
-            <button class="action-btn delete" onclick="deleteProject(4)">削除</button>
-          </div>
-        </td>
-      </tr><tr>
-        <td>2026-02-25</td>
-        <td>TOPページ：選ばれる理由の修正</td>
-        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
-        <td class="comment-cell">
-          <div></div>
-          <button class="action-btn" onclick="openCommentModal(5)" style="margin-top: 6px;">コメント追加</button>
-          
-        </td>
-        <td>
-          <div class="action-cell">
-            <button class="action-btn" onclick="editProject(5)">編集</button>
-            <button class="action-btn delete" onclick="deleteProject(5)">削除</button>
-          </div>
-        </td>
-      </tr><tr>
-        <td>2026-02-25</td>
-        <td>TOPページ：ヌリカエ対策（FAQブロックの追加）</td>
-        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
-        <td class="comment-cell">
-          <div></div>
-          <button class="action-btn" onclick="openCommentModal(6)" style="margin-top: 6px;">コメント追加</button>
-          
-        </td>
-        <td>
-          <div class="action-cell">
-            <button class="action-btn" onclick="editProject(6)">編集</button>
-            <button class="action-btn delete" onclick="deleteProject(6)">削除</button>
-          </div>
-        </td>
-      </tr><tr>
-        <td>2026-03-23</td>
-        <td>フッターエリア：明石大久保店の営業時間変更</td>
-        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
-        <td class="comment-cell">
-          <div>下記内容に変更をお願いします。
-
-明石大久保店
-営業時間：10時00分～16時00分
-定休日：木曜日</div>
-          <button class="action-btn" onclick="openCommentModal(2)" style="margin-top: 6px;">コメント追加</button>
-          
-        </td>
-        <td>
-          <div class="action-cell">
-            <button class="action-btn" onclick="editProject(2)">編集</button>
-            <button class="action-btn delete" onclick="deleteProject(2)">削除</button>
-          </div>
-        </td>
-      </tr><tr>
-        <td>2026-04-03</td>
-        <td>よくある質問ページの制作</td>
-        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
-        <td class="comment-cell">
-          <div>カジワラ会長の決裁取れたので、
-添付PDF内容で実装をお願いします。</div>
-          <button class="action-btn" onclick="openCommentModal(1)" style="margin-top: 6px;">コメント追加</button>
-          <button class="action-btn" onclick="downloadPDF(1)" style="margin-left: 6px;">📄 PDF</button>
-        </td>
-        <td>
-          <div class="action-cell">
-            <button class="action-btn" onclick="editProject(1)">編集</button>
-            <button class="action-btn delete" onclick="deleteProject(1)">削除</button>
-          </div>
-        </td>
-      </tr><tr>
-        <td>2026-04-03</td>
-        <td>問合せフォーム改善</td>
-        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
-        <td class="comment-cell">
-          <div>梶原会長の決裁が取れたので、実装をお願いします。</div>
-          <button class="action-btn" onclick="openCommentModal(3)" style="margin-top: 6px;">コメント追加</button>
-          <button class="action-btn" onclick="downloadPDF(3)" style="margin-left: 6px;">📄 PDF</button>
-        </td>
-        <td>
-          <div class="action-cell">
-            <button class="action-btn" onclick="editProject(3)">編集</button>
-            <button class="action-btn delete" onclick="deleteProject(3)">削除</button>
-          </div>
-        </td>
-      </tr></tbody>
+      <tbody id="tableBody">
+        <!-- テーブル行が動的に生成される -->
+      </tbody>
     </table>
     <div class="empty-state" id="emptyState" style="display:none;">
       案件がありません
@@ -384,11 +328,11 @@
     <div class="modal-body">
       <div class="form-group">
         <label>依頼日</label>
-        <input type="date" id="requestDate">
+        <input type="date" id="requestDate" />
       </div>
       <div class="form-group">
         <label>案件名</label>
-        <input type="text" id="projectName" placeholder="案件名を入力">
+        <input type="text" id="projectName" placeholder="案件名を入力" />
       </div>
       <div class="form-group">
         <label>ステータス</label>
@@ -404,7 +348,7 @@
       </div>
       <div class="form-group">
         <label>PDF添付（制作依頼書等）</label>
-        <input type="file" id="pdfFile" accept=".pdf">
+        <input type="file" id="pdfFile" accept=".pdf" />
         <div id="fileInfo" style="margin-top: 6px; font-size: 12px; color: #666;"></div>
       </div>
     </div>
@@ -428,6 +372,63 @@
     <div class="modal-footer">
       <button class="btn" onclick="closeCommentModal()">キャンセル</button>
       <button class="btn primary" onclick="saveComment()">追加</button>
+    </div>
+  </div>
+</div>
+
+<!-- モーダル：案件編集 -->
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <div class="modal-header">案件編集</div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>依頼日</label>
+        <input type="date" id="editRequestDate" />
+      </div>
+      <div class="form-group">
+        <label>案件名</label>
+        <input type="text" id="editProjectName" placeholder="案件名を入力" />
+      </div>
+      <div class="form-group">
+        <label>ステータス</label>
+        <select id="editStatus">
+          <option value="アステック対応中">アステック対応中</option>
+          <option value="シールズ様対応中">シールズ様対応中</option>
+          <option value="先方確認中">先方確認中</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>コメント</label>
+        <textarea id="editComment"></textarea>
+      </div>
+      <div class="form-group">
+        <label>PDF管理</label>
+        <button class="btn primary" id="editPdfBtn" onclick="openPdfModalFromEdit()" style="width: 100%; text-align: center;">📄 PDF</button>
+        <div id="editFileInfo" style="margin-top: 6px; font-size: 12px; color: #666;"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeEditModal()">キャンセル</button>
+      <button class="btn primary" onclick="saveEditProject()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- モーダル：PDF操作選択 -->
+<div class="modal" id="pdfModal">
+  <div class="modal-content">
+    <div class="modal-header">PDF管理</div>
+    <div class="modal-body">
+      <div id="pdfModalInfo" style="margin-bottom: 1.5rem; padding: 12px; background-color: #f5f5f5; border-radius: 8px; font-size: 13px; color: #666;"></div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <button class="btn primary" id="downloadPdfBtn" onclick="downloadPdfFromModal()" style="width: 100%; text-align: center; padding: 12px;">📥 ダウンロード</button>
+        <button class="btn primary" id="addPdfBtn" onclick="openPdfFileInput()" style="width: 100%; text-align: center; padding: 12px; background-color: #388e3c; border-color: #388e3c;">➕ PDF追加</button>
+        <button class="btn primary" id="deletePdfBtn" onclick="deletePdfFromProject()" style="width: 100%; text-align: center; padding: 12px; background-color: #d32f2f; border-color: #d32f2f; display: none;">🗑️ 削除</button>
+      </div>
+      <input type="file" id="modalPdfFile" accept=".pdf" style="display: none;" onchange="savePdfToProject()" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closePdfModal()">閉じる</button>
     </div>
   </div>
 </div>
@@ -490,7 +491,15 @@
   function renderTable() {
     const tbody = document.getElementById('tableBody');
     const emptyState = document.getElementById('emptyState');
-    const visibleProjects = getVisibleProjects();
+    let visibleProjects = getVisibleProjects();
+    
+    // ソート処理：日付なしは一番上、その後古い順
+    visibleProjects.sort((a, b) => {
+      if (!a.date && !b.date) return 0;
+      if (!a.date) return -1; // aが日付なし → aを前に
+      if (!b.date) return 1;  // bが日付なし → aを後ろに
+      return new Date(a.date) - new Date(b.date); // 古い順
+    });
     
     tbody.innerHTML = '';
     
@@ -501,7 +510,7 @@
     
     emptyState.style.display = 'none';
     
-    visibleProjects.forEach((project, index) => {
+    visibleProjects.forEach((project) => {
       const row = document.createElement('tr');
       
       // ステータスバッジのクラス決定
@@ -529,25 +538,59 @@
         actionCell = '<div class="action-cell"></div>';
       }
       
-      // PDFボタン生成
+      // PDFボタン生成（内部ユーザーのみ変更可能）
       let pdfBtn = '';
-      if (project.pdf) {
+      if (currentRole === 'internal') {
+        pdfBtn = `<button class="action-btn" onclick="openPdfModal(${project.id})" style="margin-left: 6px;">📄 ${project.pdf ? 'PDF変更' : 'PDF追加'}</button>`;
+      } else if (project.pdf) {
+        // 外部ユーザーはダウンロードのみ可能
         pdfBtn = `<button class="action-btn" onclick="downloadPDF(${project.id})" style="margin-left: 6px;">📄 PDF</button>`;
       }
       
+      // ステータス選択肢（内部は変更可、外部は表示のみ）
+      let statusCell = '';
+      if (currentRole === 'internal') {
+        statusCell = `
+          <select class="status-select" onchange="updateStatus(${project.id}, this.value)">
+            <option value="アステック対応中" ${project.status === 'アステック対応中' ? 'selected' : ''}>アステック対応中</option>
+            <option value="シールズ様対応中" ${project.status === 'シールズ様対応中' ? 'selected' : ''}>シールズ様対応中</option>
+            <option value="先方確認中" ${project.status === '先方確認中' ? 'selected' : ''}>先方確認中</option>
+          </select>
+        `;
+      } else {
+        statusCell = `<span class="status-badge ${statusClass}">${project.status}</span>`;
+      }
+      
       row.innerHTML = `
-        <td>${project.date}</td>
+        <td>${project.date || '-'}</td>
         <td>${displayName}</td>
-        <td><span class="status-badge ${statusClass}">${project.status}</span></td>
+        <td>${statusCell}</td>
         <td class="comment-cell">
           <div>${project.comment}</div>
           <button class="action-btn" onclick="openCommentModal(${project.id})" style="margin-top: 6px;">コメント追加</button>
-          ${pdfBtn}
+        </td>
+        <td style="text-align: center;">
+          ${currentRole === 'internal' ? `<button class="action-btn" onclick="openPdfModal(${project.id})" style="margin: 0;">📄 PDF</button>` : (project.pdf ? `<button class="action-btn" onclick="downloadPDF(${project.id})" style="margin: 0;">📄 PDF</button>` : '')}
         </td>
         ${currentRole === 'internal' ? `<td>${actionCell}</td>` : ''}
       `;
       
       tbody.appendChild(row);
+    });
+    
+    // セレクトボックスに背景色を設定
+    const selects = document.querySelectorAll('.status-select');
+    selects.forEach(select => {
+      if (select.value === 'アステック対応中') {
+        select.style.backgroundColor = '#e3f2fd';
+        select.style.color = '#1976d2';
+      } else if (select.value === 'シールズ様対応中') {
+        select.style.backgroundColor = '#e8f5e9';
+        select.style.color = '#388e3c';
+      } else if (select.value === '先方確認中') {
+        select.style.backgroundColor = '#fff3e0';
+        select.style.color = '#f57c00';
+      }
     });
   }
 
@@ -580,6 +623,57 @@
     editingProjectId = null;
   }
 
+  // 案件編集モーダル開く
+  function editProject(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    
+    editingProjectId = projectId;
+    document.getElementById('editRequestDate').value = project.date;
+    document.getElementById('editProjectName').value = project.name;
+    document.getElementById('editStatus').value = project.status;
+    document.getElementById('editComment').value = project.comment;
+    document.getElementById('editFileInfo').textContent = project.pdfFileName ? `現在のファイル: ${project.pdfFileName}` : 'PDFが未選択です';
+    document.getElementById('editModal').classList.add('active');
+  }
+
+  // 案件編集モーダル閉じる
+  function closeEditModal() {
+    document.getElementById('editModal').classList.remove('active');
+    editingProjectId = null;
+  }
+
+  // 案件編集保存
+  function saveEditProject() {
+    const project = projects.find(p => p.id === editingProjectId);
+    if (!project) return;
+    
+    const date = document.getElementById('editRequestDate').value;
+    const name = document.getElementById('editProjectName').value;
+    const status = document.getElementById('editStatus').value;
+    const comment = document.getElementById('editComment').value;
+    
+    if (!name || !status) {
+      alert('必須項目を入力してください');
+      return;
+    }
+    
+    project.date = date;
+    project.name = name;
+    project.status = status;
+    project.comment = comment;
+    
+    saveProjects();
+    renderTable();
+    closeEditModal();
+  }
+
+  // 編集モーダルからPDFモーダルを開く
+  function openPdfModalFromEdit() {
+    closeEditModal();
+    openPdfModal(editingProjectId);
+  }
+
   // プロジェクト追加
   function addProject() {
     const date = document.getElementById('requestDate').value;
@@ -588,7 +682,7 @@
     const comment = document.getElementById('comment').value;
     const pdfFile = document.getElementById('pdfFile').files[0];
     
-    if (!date || !name || !status) {
+    if (!name || !status) {
       alert('必須項目を入力してください');
       return;
     }
@@ -650,7 +744,84 @@
     }
   }
 
-  // PDFダウンロード
+  // PDFモーダル開く
+  function openPdfModal(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    
+    editingProjectId = projectId;
+    const info = project.pdfFileName ? `現在のファイル: ${project.pdfFileName}` : 'PDFが未選択です';
+    document.getElementById('pdfModalInfo').textContent = info;
+    document.getElementById('modalPdfFile').value = '';
+    
+    // PDFが存在する場合はダウンロード・削除ボタンを表示
+    document.getElementById('downloadPdfBtn').style.display = project.pdf ? 'block' : 'none';
+    document.getElementById('deletePdfBtn').style.display = project.pdf ? 'block' : 'none';
+    document.getElementById('addPdfBtn').textContent = project.pdf ? '➕ PDF変更' : '➕ PDF追加';
+    
+    document.getElementById('pdfModal').classList.add('active');
+  }
+
+  // PDFモーダル閉じる
+  function closePdfModal() {
+    document.getElementById('pdfModal').classList.remove('active');
+    editingProjectId = null;
+  }
+
+  // ファイル入力を開く
+  function openPdfFileInput() {
+    document.getElementById('modalPdfFile').click();
+  }
+
+  // PDFをダウンロード
+  function downloadPdfFromModal() {
+    const project = projects.find(p => p.id === editingProjectId);
+    if (project && project.pdf) {
+      const link = document.createElement('a');
+      link.href = project.pdf;
+      link.download = project.pdfFileName || `案件_${editingProjectId}.pdf`;
+      link.click();
+    }
+  }
+
+  // PDFを案件に保存
+  function savePdfToProject() {
+    const pdfFile = document.getElementById('modalPdfFile').files[0];
+    const project = projects.find(p => p.id === editingProjectId);
+    
+    if (!project) return;
+    
+    if (!pdfFile) {
+      alert('ファイルを選択してください');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      project.pdf = e.target.result;
+      project.pdfFileName = pdfFile.name;
+      saveProjects();
+      renderTable();
+      closePdfModal();
+    };
+    reader.readAsDataURL(pdfFile);
+  }
+
+  // PDFを削除
+  function deletePdfFromProject() {
+    if (confirm('このPDFを削除してもよろしいですか？')) {
+      const project = projects.find(p => p.id === editingProjectId);
+      if (project) {
+        project.pdf = null;
+        project.pdfFileName = null;
+        saveProjects();
+        renderTable();
+        closePdfModal();
+      }
+    }
+  }
+
+  // 従来のPDFダウンロード関数（後方互換性）
   function downloadPDF(projectId) {
     const project = projects.find(p => p.id === projectId);
     if (project && project.pdf) {
@@ -658,6 +829,33 @@
       link.href = project.pdf;
       link.download = project.pdfFileName || `案件_${projectId}.pdf`;
       link.click();
+    }
+  }
+
+  // ステータス更新（リアルタイム）
+  function updateStatus(projectId, newStatus) {
+    const project = projects.find(p => p.id === projectId);
+    if (project) {
+      project.status = newStatus;
+      saveProjects();
+      renderTable();
+      
+      // 選択後、背景色を反映させる
+      setTimeout(() => {
+        const selects = document.querySelectorAll('.status-select');
+        selects.forEach(select => {
+          if (select.value === 'アステック対応中') {
+            select.style.backgroundColor = '#e3f2fd';
+            select.style.color = '#1976d2';
+          } else if (select.value === 'シールズ様対応中') {
+            select.style.backgroundColor = '#e8f5e9';
+            select.style.color = '#388e3c';
+          } else if (select.value === '先方確認中') {
+            select.style.backgroundColor = '#fff3e0';
+            select.style.color = '#f57c00';
+          }
+        });
+      }, 0);
     }
   }
 
@@ -675,6 +873,5 @@
   init();
 </script>
 
-
-
-</body></html>
+</body>
+</html>
