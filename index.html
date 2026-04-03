@@ -402,9 +402,15 @@
         <textarea id="editComment"></textarea>
       </div>
       <div class="form-group">
-        <label>PDF管理</label>
-        <button class="btn primary" id="editPdfBtn" onclick="openPdfModalFromEdit()" style="width: 100%; text-align: center;">📄 PDF</button>
-        <div id="editFileInfo" style="margin-top: 6px; font-size: 12px; color: #666;"></div>
+        <label>📄 PDF管理</label>
+        <div id="editPdfInfo" style="font-size: 13px; color: #666; margin-bottom: 8px; padding: 8px; background-color: #f9f9f9; border-radius: 6px;"></div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button type="button" class="action-btn" id="editDownloadPdfBtn" style="display: none;" onclick="downloadPdfFromEditModal()">⬇️ ダウンロード</button>
+          <button type="button" class="action-btn" id="editAddPdfBtn" onclick="openPdfFileInputFromEdit()">➕ PDF追加</button>
+          <button type="button" class="action-btn delete" id="editDeletePdfBtn" style="display: none;" onclick="deletePdfFromEditModal()">🗑️ 削除</button>
+        </div>
+        <input type="file" id="editModalPdfFile" accept=".pdf" style="display: none;" onchange="savePdfToEditModal()">
+        <div id="editPdfFileName" style="font-size: 12px; color: #999; margin-top: 6px;"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -633,7 +639,18 @@
     document.getElementById('editProjectName').value = project.name;
     document.getElementById('editStatus').value = project.status;
     document.getElementById('editComment').value = project.comment;
-    document.getElementById('editFileInfo').textContent = project.pdfFileName ? `現在のファイル: ${project.pdfFileName}` : 'PDFが未選択です';
+    
+    // PDF情報を表示
+    const info = project.pdfFileName ? `現在のファイル: ${project.pdfFileName}` : 'PDFが未選択です';
+    document.getElementById('editPdfInfo').textContent = info;
+    document.getElementById('editModalPdfFile').value = '';
+    document.getElementById('editPdfFileName').textContent = '';
+    
+    // PDFが存在する場合はダウンロード・削除ボタンを表示
+    document.getElementById('editDownloadPdfBtn').style.display = project.pdf ? 'block' : 'none';
+    document.getElementById('editDeletePdfBtn').style.display = project.pdf ? 'block' : 'none';
+    document.getElementById('editAddPdfBtn').textContent = project.pdf ? '➕ PDF変更' : '➕ PDF追加';
+    
     document.getElementById('editModal').classList.add('active');
   }
 
@@ -662,16 +679,86 @@
     project.name = name;
     project.status = status;
     project.comment = comment;
+    // PDFはビューで別途保存されるため、ここでは変更しない
     
     saveProjects();
     renderTable();
     closeEditModal();
   }
 
-  // 編集モーダルからPDFモーダルを開く
-  function openPdfModalFromEdit() {
-    closeEditModal();
-    openPdfModal(editingProjectId);
+  // 編集モーダルからファイル入力を開く
+  function openPdfFileInputFromEdit() {
+    document.getElementById('editModalPdfFile').click();
+  }
+
+  // 編集モーダルでPDF選択をプレビュー
+  function previewPdfInEdit() {
+    const pdfFile = document.getElementById('editModalPdfFile').files[0];
+    if (pdfFile) {
+      document.getElementById('editPdfFileName').textContent = `選択: ${pdfFile.name}`;
+    }
+  }
+
+  // 編集モーダルからPDFをダウンロード
+  function downloadPdfFromEditModal() {
+    const project = projects.find(p => p.id === editingProjectId);
+    if (project && project.pdf) {
+      const link = document.createElement('a');
+      link.href = project.pdf;
+      link.download = project.pdfFileName || `案件_${editingProjectId}.pdf`;
+      link.click();
+    }
+  }
+
+  // 編集モーダルでPDFを保存
+  function savePdfToEditModal() {
+    const pdfFile = document.getElementById('editModalPdfFile').files[0];
+    const project = projects.find(p => p.id === editingProjectId);
+    
+    if (!project) return;
+    
+    if (!pdfFile) {
+      alert('ファイルを選択してください');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      project.pdf = e.target.result;
+      project.pdfFileName = pdfFile.name;
+      
+      // UI更新
+      document.getElementById('editPdfInfo').textContent = `現在のファイル: ${pdfFile.name}`;
+      document.getElementById('editDownloadPdfBtn').style.display = 'block';
+      document.getElementById('editDeletePdfBtn').style.display = 'block';
+      document.getElementById('editAddPdfBtn').textContent = '➕ PDF変更';
+      document.getElementById('editModalPdfFile').value = '';
+      document.getElementById('editPdfFileName').textContent = '';
+      
+      saveProjects();
+    };
+    reader.readAsDataURL(pdfFile);
+  }
+
+  // 編集モーダルでPDFを削除
+  function deletePdfFromEditModal() {
+    if (confirm('このPDFを削除してもよろしいですか？')) {
+      const project = projects.find(p => p.id === editingProjectId);
+      if (project) {
+        project.pdf = null;
+        project.pdfFileName = null;
+        
+        // UI更新
+        document.getElementById('editPdfInfo').textContent = 'PDFが未選択です';
+        document.getElementById('editDownloadPdfBtn').style.display = 'none';
+        document.getElementById('editDeletePdfBtn').style.display = 'none';
+        document.getElementById('editAddPdfBtn').textContent = '➕ PDF追加';
+        document.getElementById('editModalPdfFile').value = '';
+        document.getElementById('editPdfFileName').textContent = '';
+        
+        saveProjects();
+      }
+    }
   }
 
   // プロジェクト追加
