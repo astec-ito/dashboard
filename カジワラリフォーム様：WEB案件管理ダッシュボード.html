@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)file:///C:/Users/82448/Downloads/dashboard_1.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カジワラリフォーム様：WEB案件管理ダッシュボード</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 1.5rem;
+  }
+  
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.5px solid #ddd;
+  }
+  
+  .header h1 { font-size: 22px; font-weight: 500; }
+  
+  .role-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  
+  .role-badge.internal {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .role-badge.external {
+    background-color: #fff3e0;
+    color: #f57c00;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    border: 0.5px solid #ccc;
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .btn.primary {
+    background-color: #1976d2;
+    color: white;
+    border-color: #1976d2;
+  }
+  
+  .btn.primary:hover {
+    background-color: #1565c0;
+  }
+  
+  .table-wrapper {
+    background-color: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th {
+    background-color: #f9f9f9;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+    color: #666;
+    border-bottom: 0.5px solid #ddd;
+  }
+  
+  td {
+    padding: 12px 16px;
+    border-bottom: 0.5px solid #ddd;
+    font-size: 14px;
+  }
+  
+  tr:hover {
+    background-color: #fafafa;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .status-astec {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .status-shields {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  .status-confirm {
+    background-color: #fff3e0;
+    color: #f57c00;
+  }
+  
+  .comment-cell {
+    max-width: 300px;
+    word-wrap: break-word;
+    color: #666;
+  }
+  
+  .action-cell {
+    text-align: center;
+  }
+  
+  .action-btn {
+    padding: 4px 8px;
+    margin: 0 2px;
+    font-size: 12px;
+    border: 0.5px solid #ccc;
+    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .action-btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .action-btn.delete {
+    color: #d32f2f;
+    border-color: #d32f2f;
+  }
+  
+  .action-btn.delete:hover {
+    background-color: #ffebee;
+  }
+  
+  .action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal.active {
+    display: flex;
+  }
+  
+  .modal-content {
+    background-color: white;
+    border: 0.5px solid #ddd;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .modal-header {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    border-bottom: 0.5px solid #ddd;
+    padding-bottom: 1rem;
+  }
+  
+  .modal-body {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #666;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 0.5px solid #ccc;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background-color: white;
+    color: #333;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  .modal-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #999;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>カジワラリフォーム様：WEB案件管理ダッシュボード</h1>
+    <span class="role-badge internal" id="roleBadge">ロール: アステックペイント（全案件表示）</span>
+  </div>
+  
+  <div class="controls">
+    <button class="btn primary" id="addBtn" onclick="openAddModal()" style="display: block;">+ 新規案件追加</button>
+  </div>
+  
+  <div class="table-wrapper">
+    <table id="projectTable">
+      <thead>
+        <tr>
+          <th>NO.</th>
+          <th>依頼日</th>
+          <th>案件名</th>
+          <th>ステータス</th>
+          <th>コメント</th>
+          <th id="actionHeader" style="display: table-cell;">アクション</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"><tr>
+        <td>4</td>
+        <td></td>
+        <td>明石エリアページの新規制作</td>
+        <td><span class="status-badge status-astec">アステック対応中</span></td>
+        <td class="comment-cell">
+          <div>伊藤：ページ確認中</div>
+          <button class="action-btn" onclick="openCommentModal(4)" style="margin-top: 6px;">コメント追加</button>
+          
+        </td>
+        <td>
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(4)">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(4)">削除</button>
+          </div>
+        </td>
+      </tr><tr>
+        <td>5</td>
+        <td>2026-02-25</td>
+        <td>TOPページ：選ばれる理由の修正</td>
+        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
+        <td class="comment-cell">
+          <div></div>
+          <button class="action-btn" onclick="openCommentModal(5)" style="margin-top: 6px;">コメント追加</button>
+          
+        </td>
+        <td>
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(5)">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(5)">削除</button>
+          </div>
+        </td>
+      </tr><tr>
+        <td>6</td>
+        <td>2026-02-25</td>
+        <td>TOPページ：ヌリカエ対策（FAQブロックの追加）</td>
+        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
+        <td class="comment-cell">
+          <div></div>
+          <button class="action-btn" onclick="openCommentModal(6)" style="margin-top: 6px;">コメント追加</button>
+          
+        </td>
+        <td>
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(6)">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(6)">削除</button>
+          </div>
+        </td>
+      </tr><tr>
+        <td>2</td>
+        <td>2026-03-23</td>
+        <td>フッターエリア：明石大久保店の営業時間変更</td>
+        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
+        <td class="comment-cell">
+          <div>下記内容に変更をお願いします。
+
+明石大久保店
+営業時間：10時00分～16時00分
+定休日：木曜日</div>
+          <button class="action-btn" onclick="openCommentModal(2)" style="margin-top: 6px;">コメント追加</button>
+          
+        </td>
+        <td>
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(2)">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(2)">削除</button>
+          </div>
+        </td>
+      </tr><tr>
+        <td>1</td>
+        <td>2026-04-03</td>
+        <td>よくある質問ページの制作</td>
+        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
+        <td class="comment-cell">
+          <div>カジワラ会長の決裁取れたので、
+添付PDF内容で実装をお願いします。</div>
+          <button class="action-btn" onclick="openCommentModal(1)" style="margin-top: 6px;">コメント追加</button>
+          <button class="action-btn" onclick="downloadPDF(1)" style="margin-left: 6px;">📄 PDF</button>
+        </td>
+        <td>
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(1)">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(1)">削除</button>
+          </div>
+        </td>
+      </tr><tr>
+        <td>3</td>
+        <td>2026-04-03</td>
+        <td>問合せフォーム改善</td>
+        <td><span class="status-badge status-shields">シールズ様対応中</span></td>
+        <td class="comment-cell">
+          <div>梶原会長の決裁が取れたので、実装をお願いします。</div>
+          <button class="action-btn" onclick="openCommentModal(3)" style="margin-top: 6px;">コメント追加</button>
+          <button class="action-btn" onclick="downloadPDF(3)" style="margin-left: 6px;">📄 PDF</button>
+        </td>
+        <td>
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(3)">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(3)">削除</button>
+          </div>
+        </td>
+      </tr></tbody>
+    </table>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      案件がありません
+    </div>
+  </div>
+</div>
+
+<!-- モーダル：新規案件追加 -->
+<div class="modal" id="addModal">
+  <div class="modal-content">
+    <div class="modal-header">新規案件追加</div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>依頼日</label>
+        <input type="date" id="requestDate">
+      </div>
+      <div class="form-group">
+        <label>案件名</label>
+        <input type="text" id="projectName" placeholder="案件名を入力">
+      </div>
+      <div class="form-group">
+        <label>ステータス</label>
+        <select id="status">
+          <option value="アステック対応中">アステック対応中</option>
+          <option value="シールズ様対応中">シールズ様対応中</option>
+          <option value="先方確認中">先方確認中</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>コメント</label>
+        <textarea id="comment"></textarea>
+      </div>
+      <div class="form-group">
+        <label>PDF添付（制作依頼書等）</label>
+        <input type="file" id="pdfFile" accept=".pdf">
+        <div id="fileInfo" style="margin-top: 6px; font-size: 12px; color: #666;"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeAddModal()">キャンセル</button>
+      <button class="btn primary" onclick="addProject()">追加</button>
+    </div>
+  </div>
+</div>
+
+<!-- モーダル：コメント追加 -->
+<div class="modal" id="commentModal">
+  <div class="modal-content">
+    <div class="modal-header">コメント追加</div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>コメント</label>
+        <textarea id="newComment"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeCommentModal()">キャンセル</button>
+      <button class="btn primary" onclick="saveComment()">追加</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // グローバル状態管理
+  let currentRole = 'internal'; // 'internal' or 'external'
+  let projects = [];
+  let editingProjectId = null;
+
+  // ページ読み込み時の初期化
+  function init() {
+    // URLパラメータからロール判定
+    const params = new URLSearchParams(window.location.search);
+    const vendor = params.get('vendor');
+    
+    if (vendor === 'shields') {
+      currentRole = 'external';
+    } else {
+      currentRole = 'internal';
+    }
+    
+    loadProjects();
+    renderTable();
+    updateUI();
+  }
+
+  // ロール表示の更新
+  function updateUI() {
+    const badge = document.getElementById('roleBadge');
+    const addBtn = document.getElementById('addBtn');
+    const actionHeader = document.getElementById('actionHeader');
+    
+    if (currentRole === 'internal') {
+      badge.textContent = 'ロール: アステックペイント（全案件表示）';
+      badge.className = 'role-badge internal';
+      addBtn.style.display = 'block';
+      actionHeader.style.display = 'table-cell';
+    } else {
+      badge.textContent = 'ロール: シールズ様（担当案件のみ表示）';
+      badge.className = 'role-badge external';
+      addBtn.style.display = 'none';
+      actionHeader.style.display = 'none';
+    }
+    
+    renderTable();
+  }
+
+  // プロジェクト表示フィルター
+  function getVisibleProjects() {
+    if (currentRole === 'internal') {
+      return projects;
+    } else {
+      // 外部業者：シールズ様対応中の案件のみ
+      return projects.filter(p => p.status === 'シールズ様対応中');
+    }
+  }
+
+  // テーブルレンダリング
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    const emptyState = document.getElementById('emptyState');
+    const visibleProjects = getVisibleProjects();
+    
+    tbody.innerHTML = '';
+    
+    if (visibleProjects.length === 0) {
+      emptyState.style.display = 'block';
+      return;
+    }
+    
+    emptyState.style.display = 'none';
+    
+    visibleProjects.forEach((project, index) => {
+      const row = document.createElement('tr');
+      
+      // ステータスバッジのクラス決定
+      let statusClass = '';
+      if (project.status === 'アステック対応中') {
+        statusClass = 'status-astec';
+      } else if (project.status === 'シールズ様対応中') {
+        statusClass = 'status-shields';
+      } else {
+        statusClass = 'status-confirm';
+      }
+      
+      // 外部業者向けは情報をマスク
+      const displayName = currentRole === 'external' ? `案件${index + 1}` : project.name;
+      
+      let actionCell = '';
+      if (currentRole === 'internal') {
+        actionCell = `
+          <div class="action-cell">
+            <button class="action-btn" onclick="editProject(${project.id})">編集</button>
+            <button class="action-btn delete" onclick="deleteProject(${project.id})">削除</button>
+          </div>
+        `;
+      } else {
+        actionCell = '<div class="action-cell"></div>';
+      }
+      
+      // PDFボタン生成
+      let pdfBtn = '';
+      if (project.pdf) {
+        pdfBtn = `<button class="action-btn" onclick="downloadPDF(${project.id})" style="margin-left: 6px;">📄 PDF</button>`;
+      }
+      
+      row.innerHTML = `
+        <td>${project.id}</td>
+        <td>${project.date}</td>
+        <td>${displayName}</td>
+        <td><span class="status-badge ${statusClass}">${project.status}</span></td>
+        <td class="comment-cell">
+          <div>${project.comment}</div>
+          <button class="action-btn" onclick="openCommentModal(${project.id})" style="margin-top: 6px;">コメント追加</button>
+          ${pdfBtn}
+        </td>
+        ${currentRole === 'internal' ? `<td>${actionCell}</td>` : ''}
+      `;
+      
+      tbody.appendChild(row);
+    });
+  }
+
+  // モーダル関数
+  function openAddModal() {
+    document.getElementById('addModal').classList.add('active');
+    // 今日の日付をセット
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('requestDate').value = today;
+  }
+
+  function closeAddModal() {
+    document.getElementById('addModal').classList.remove('active');
+    document.getElementById('requestDate').value = '';
+    document.getElementById('projectName').value = '';
+    document.getElementById('status').value = 'アステック対応中';
+    document.getElementById('comment').value = '';
+    document.getElementById('pdfFile').value = '';
+    document.getElementById('fileInfo').textContent = '';
+  }
+
+  function openCommentModal(projectId) {
+    editingProjectId = projectId;
+    document.getElementById('commentModal').classList.add('active');
+    document.getElementById('newComment').value = '';
+  }
+
+  function closeCommentModal() {
+    document.getElementById('commentModal').classList.remove('active');
+    editingProjectId = null;
+  }
+
+  // プロジェクト追加
+  function addProject() {
+    const date = document.getElementById('requestDate').value;
+    const name = document.getElementById('projectName').value;
+    const status = document.getElementById('status').value;
+    const comment = document.getElementById('comment').value;
+    const pdfFile = document.getElementById('pdfFile').files[0];
+    
+    if (!date || !name || !status) {
+      alert('必須項目を入力してください');
+      return;
+    }
+    
+    const newProject = {
+      id: projects.length > 0 ? Math.max(...projects.map(p => p.id)) + 1 : 1,
+      date: date,
+      name: name,
+      status: status,
+      comment: comment,
+      pdf: null,
+      pdfFileName: null
+    };
+    
+    // PDFファイルがある場合、Base64に変換して保存
+    if (pdfFile) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        newProject.pdf = e.target.result; // Base64文字列
+        newProject.pdfFileName = pdfFile.name;
+        projects.push(newProject);
+        saveProjects();
+        renderTable();
+        closeAddModal();
+      };
+      reader.readAsDataURL(pdfFile);
+    } else {
+      projects.push(newProject);
+      saveProjects();
+      renderTable();
+      closeAddModal();
+    }
+  }
+
+  // プロジェクト削除
+  function deleteProject(projectId) {
+    if (confirm('この案件を削除してもよろしいですか？')) {
+      projects = projects.filter(p => p.id !== projectId);
+      saveProjects();
+      renderTable();
+    }
+  }
+
+  // コメント保存（外部業者も可能）
+  function saveComment() {
+    const comment = document.getElementById('newComment').value;
+    
+    if (!comment.trim()) {
+      alert('コメントを入力してください');
+      return;
+    }
+    
+    const project = projects.find(p => p.id === editingProjectId);
+    if (project) {
+      project.comment = (project.comment ? project.comment + '\n' : '') + '[' + new Date().toLocaleDateString('ja-JP') + '] ' + comment;
+      saveProjects();
+      renderTable();
+      closeCommentModal();
+    }
+  }
+
+  // PDFダウンロード
+  function downloadPDF(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    if (project && project.pdf) {
+      const link = document.createElement('a');
+      link.href = project.pdf;
+      link.download = project.pdfFileName || `案件_${projectId}.pdf`;
+      link.click();
+    }
+  }
+
+  // データ保存・読み込み
+  function saveProjects() {
+    localStorage.setItem('projects', JSON.stringify(projects));
+  }
+
+  function loadProjects() {
+    const saved = localStorage.getItem('projects');
+    projects = saved ? JSON.parse(saved) : [];
+  }
+
+  // 初期化実行
+  init();
+</script>
+
+
+
+</body></html>
